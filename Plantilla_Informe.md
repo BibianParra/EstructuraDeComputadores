@@ -13,15 +13,18 @@
 ## 1. Análisis del Código Base
 
 ### 1.1. Evidencia de Ejecución
-Adjunte aquí las capturas de pantalla de la ejecución del `programa_base.asm` utilizando las siguientes herramientas de MARS:
+Se realizó la simulación del archivo `programa_base.asm` utilizando las herramientas de MARS para identificar el comportamiento del datapath y el conteo de instrucciones;
 *   **MIPS X-Ray** (Ventana con el Datapath animado).
+  Se observa el flujo de datos para una instrucción de tipo inmediato (ORI) donde el valor se extiende por el bloque Sign Extend y se procesa en la ALU.
   <img width="991" height="563" alt="image" src="https://github.com/user-attachments/assets/f8d001f9-9c2e-4990-9900-c0d1c1b31d14" />
 
 *   **Instruction Counter** (Contador de instrucciones totales).
+  La ejecución inicial reporta un total de 94 instrucciones procesadas en el segmento completo analizado.
 <img width="413" height="253" alt="image" src="https://github.com/user-attachments/assets/8a1149f7-63cc-4f1d-b8aa-a2534f143bcf" />
 
 
 *   **Instruction Statistics** (Estadisticas de instrucciones ).
+  La distribución muestra un predominio de instrucciones de tipo I (acceso a memoria y saltos) y tipo R (aritméticas), lo que permite identificar puntos críticos de estancamiento.
 <img width="348" height="281" alt="image" src="https://github.com/user-attachments/assets/07d46c60-f9f7-43f4-82fd-3bb2076d22f8" />
 
 
@@ -37,6 +40,8 @@ Completa la siguiente tabla identificando las instrucciones que causan paradas e
 
 ### 1.2. Estadísticas y Análisis Teórico
 Dado que MARS es un simulador funcional, el número de instrucciones ejecutadas será igual en ambas versiones. Sin embargo, en un procesador real, el tiempo de ejecución (ciclos) varía. Completa la siguiente tabla de análisis teórico:
+
+En la arquitectura segmentada de 5 etapas, se identificaron los siguientes conflictos que generan paradas (stalls) en el pipeline:
 
 | Métrica | Código Base | Código Optimizado |
 |---------|-------------|-------------------|
@@ -62,7 +67,6 @@ Adjunte aquí las capturas de pantalla de la ejecución del `programa_optimizado
   <img width="346" height="274" alt="image" src="https://github.com/user-attachments/assets/2d49081e-4ab6-418f-8242-c26f94d27a87" />
 
 
-> [Inserte aquí las capturas de pantalla]
 
 ### 2.2. Código Optimizado
 Pega aquí el fragmento de tu bucle `loop` reordenado:
@@ -131,6 +135,7 @@ La segmentación transforma la programación de bajo nivel en una tarea de optim
 
 #### ¿Es siempre posible eliminar todas las paradas (stalls)?
 No es posible eliminar todas las paradas. Aunque técnicas como el reordenamiento de instrucciones y el *Forwarding* mitigan los riesgos, siempre existirán factores como los fallos de caché (cache misses), los errores en la predicción de saltos (branch mispredictions) y las instrucciones de alta latencia (como la división) que forzarán al pipeline a insertar ciclos de espera para garantizar la integridad de los datos.
+
 
 
 
