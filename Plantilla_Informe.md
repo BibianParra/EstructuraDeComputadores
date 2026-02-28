@@ -35,8 +35,8 @@ Completa la siguiente tabla identificando las instrucciones que causan paradas e
 | Instrucción Causante     | Instrucción Afectada                    | Tipo de Riesgo (Load-Use, etc.) | Ciclos de Parada |
 |--------------------------|------------------------------------------|----------------------------------|------------------|
 | `lw $t6, 0($t5)`         | `mul $t7, $t6, $t0`                     | **Load-Use (RAW)**               | 1                |
-| `beq $t3, $t2, fin`      | Instrucción siguiente en el pipeline     | **Riesgo de Control (Branch)**   | 1*               |
-| `j loop`                 | Instrucción siguiente en el pipeline     | **Riesgo de Control (Jump)**     | 1*               |
+| `beq $t3, $t2, fin`      | Instrucción siguiente en el pipeline     | **Riesgo de Control (Branch)**   | 0+               |
+| `j loop`                 | Instrucción siguiente en el pipeline     | **Riesgo de Control (Jump)**     | 0+               |
 
 ### 1.2. Estadísticas y Análisis Teórico
 Dado que MARS es un simulador funcional, el número de instrucciones ejecutadas será igual en ambas versiones. Sin embargo, en un procesador real, el tiempo de ejecución (ciclos) varía. Completa la siguiente tabla de análisis teórico:
@@ -45,11 +45,11 @@ En la arquitectura segmentada de 5 etapas, se identificaron los siguientes confl
 
 | Métrica | Código Base | Código Optimizado |
 |---------|-------------|-------------------|
-| Instrucciones Totales (según MARS) |      94       |       70            |
+| Instrucciones Totales (según MARS) |      94       |       74            |
 | Stalls (Paradas) por iteración |    2         |              0     |
 | Total de Stalls (8 iteraciones) |     16        |       1*            |
-| **Ciclos Totales Estimados** (Inst + Stalls) |    114         |            75       |
-| **CPI Estimado** (Ciclos / Inst) |  1.21           |      107             |
+| **Ciclos Totales Estimados** (Inst + Stalls) |    110         |            75       |
+| **CPI Estimado** (Ciclos / Inst) |  1,17          |      1,01             |
 
 ---
 
@@ -68,7 +68,7 @@ Adjunte aquí las capturas de pantalla de la ejecución del `programa_optimizado
 
 
 
-### 2.2. Código Optimizado
+### 2.3. Código Optimizado
 Pega aquí el fragmento de tu bucle `loop` reordenado:
 
 ```asm
@@ -96,7 +96,7 @@ loop:
     bne $s0, $s2, loop    # Si puntero X != dirección final, repetir
 ```
 
-### 2.2. Justificación Técnica de la Mejora
+### 2.. Justificación Técnica de la Mejora
 Explica qué instrucción moviste y por qué colocarla entre el `lw` y el `mul` elimina el riesgo de datos:
 La optimización realizada se basa en la eliminación de un **Riesgo de Datos (Data Hazard)** de tipo **Load-Use**. A continuación, se detalla la lógica aplicada:
 
@@ -124,9 +124,9 @@ Esta técnica, conocida como **Instruction Scheduling** (Planificación de Instr
 ## 3. Comparativa de Resultados
 | Métrica | Código Base | Código Optimizado | Mejora (%) |
 |---------|-------------|-------------------|------------|
-| Ciclos Totales | 114 | 75 | 34.21% |
-| Stalls (Paradas) | 16 | 1 | 93.75% |
-| CPI | 1.21 | 1.07 | 11.57% |
+| Ciclos Totales | 110 | 75 | 31,82% |
+| Stalls (Paradas) | 16 | 1 | 93,75% |
+| CPI | 1,17 | 1,01 | 13,68% |
 
 ## 4. Conclusiones
 ¿Qué impacto tiene la segmentación en el diseño de software de bajo nivel? ¿Es siempre posible eliminar todas las paradas?
@@ -135,7 +135,3 @@ La segmentación transforma la programación de bajo nivel en una tarea de optim
 
 #### ¿Es siempre posible eliminar todas las paradas (stalls)?
 No es posible eliminar todas las paradas. Aunque técnicas como el reordenamiento de instrucciones y el *Forwarding* mitigan los riesgos, siempre existirán factores como los fallos de caché (cache misses), los errores en la predicción de saltos (branch mispredictions) y las instrucciones de alta latencia (como la división) que forzarán al pipeline a insertar ciclos de espera para garantizar la integridad de los datos.
-
-
-
-
