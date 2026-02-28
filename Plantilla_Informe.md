@@ -5,7 +5,7 @@
 **Fecha:** Febrero, 2026  
 **Asignatura:** Estructura de Computadores
  
-**Enlace del repositorio en GitHub:** https://github.com/BibianParra/EstructuraDeComputadores/blob/main/Plantilla_Informe.md
+**Enlace del repositorio en GitHub:** [Repo Bibian Ibet Parra Parra](https://github.com/BibianParra/EstructuraDeComputadores)
  
 
 ---
@@ -131,5 +131,6 @@ La segmentación transforma la programación de bajo nivel en una tarea de optim
 
 #### ¿Es siempre posible eliminar todas las paradas (stalls)?
 No es posible eliminar todas las paradas. Aunque técnicas como el reordenamiento de instrucciones y el *Forwarding* mitigan los riesgos, siempre existirán factores como los fallos de caché (cache misses), los errores en la predicción de saltos (branch mispredictions) y las instrucciones de alta latencia (como la división) que forzarán al pipeline a insertar ciclos de espera para garantizar la integridad de los datos.
+
 
 
